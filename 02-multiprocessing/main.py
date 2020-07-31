@@ -52,8 +52,8 @@ def this_pool_stuff(data_in, my_function, number_of_processes):
             for handle in active_stuff:
                 if handle.ready():
                     break
-                # sleep a bit to wait for any result, then repeat.
-                time.sleep(1)
+            # sleep a bit to wait for any result, then repeat.
+            time.sleep(1)
 
             # if you have a progress bar, this is where you move it.
             active_stuff.remove(handle)
