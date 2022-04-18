@@ -23,3 +23,8 @@ Beyond this point, things get even more vague.
 
 Here are some naming conventions https://namingconvention.org/python/
 Here is autopep8, because you don't need to know how I write code when I write it, you just need to be able to read the final result. https://pypi.org/project/autopep8/
+
+
+here are some cool CSS tricks that might be handy in the future
+
+https://markodenic.com/css-tips/
