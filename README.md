@@ -22,9 +22,21 @@ Beyond this point, things get even more vague.
  * There is also stuff in the meta space. Making sure things are portable and that they fit "nicely" into some framework, as a package, or to make sure it's easy to install. Having a good readme that actually fits into any of the various "description" fields that will inevitably surround the program if it is available for download anywhere.
 
 Here are some naming conventions https://namingconvention.org/python/
+
 Here is autopep8, because you don't need to know how I write code when I write it, you just need to be able to read the final result. https://pypi.org/project/autopep8/
 
+<<<<<<< HEAD
 
 here are some cool CSS tricks that might be handy in the future
 
 https://markodenic.com/css-tips/
+=======
+Adding to that, part of what makes code "good" is that what is that purpose and implementation, what is meant to be done and how it is done is chunked and easy to digest.
+
+And I think that's really difficult. C has the approach of using "headers" and "source" and they are mashed together and then something happens. And that makes sense for very small programs that consist of basically one header and one source file.
+
+When things are reused from different files, function calls inevitably end up being used in other functions, which is no longer obvious from the headers.
+
+Also, all things should converge in the end. No matter the format and attributes of user data you choose do stuff with, the identity of the user is the focus by which everything else should eventually collapse into a single format. In the mean time, everything is at least convertable to and savable as strings.
+
+>>>>>>> d564cc13c293603b57d10688c6c444b90eb9a38d
