@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <title>
+    {{var_dict["html title"]}}
+    
+    </title>
+    {% endblock %}
+    <meta charset="utf-8"/>
+    {% block style %}
+    <link rel="stylesheet" type="text/css" href="this_style.css"/>
+    {% endblock %}
+    
+  </head>
+  
+  <body>
+    {% block body %}
+    this gets replaced
+    {% endblock %}
+    
+  </body>
+</html>

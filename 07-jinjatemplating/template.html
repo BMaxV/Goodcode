@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <title>
+    {{var_dict["html title"]}}
+    
+    </title>
+    {% endblock %}
+    <meta charset="utf-8"/>
+    {% block style %}
+    <link rel="stylesheet" type="text/css" href="this_style.css"/>
+    
+    {% endblock %}
+    
+    {% block scriptimport %}
+    
+    {% endblock %}
+  </head>
+  
+  <body>
+    <div class="body" >
+    <center>
+        <h2>{{var_dict["html title"]}}</h2>
+    </center>
+    {% for key in keys %}
+    <h2>{{key}}</h2>
+    <ul>
+        {% for x in var_dict[key] %}
+        <li>{{x}}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    
+  </body>
+</html>

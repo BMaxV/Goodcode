@@ -1,0 +1,17 @@
+{% extends "./base_template.html" %}
+{% block body %}
+<center>
+    <h2>{{var_dict["html title"]}}</h2>
+</center>
+
+<p> your block text here</p>
+
+{% for key in keys %}
+<h2>{{key}}</h2>
+<ul>
+    {% for x in var_dict[key] %}
+    <li>{{x}}</li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}
