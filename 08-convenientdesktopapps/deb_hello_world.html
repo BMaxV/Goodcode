@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en-us">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   A Minimum Complete Example of Debian Packaging and Launchpad PPA: hellodeb
+  </title>
+  <meta content="A very basic but complete Debian packaging tutorial with a sample project." name="description"/>
+  <meta content="article" property="og:type"/>
+  <meta content="A Minimum Complete Example of Debian Packaging and Launchpad PPA: hellodeb" property="og:title"/>
+  <meta content="https://metebalci.com/blog/a-minimum-complete-example-of-debian-packaging-and-launchpad-ppa-hellodeb/" property="og:url"/>
+  <meta content="summary" property="twitter:card"/>
+  <meta content="@metebalci" property="twitter:site"/>
+  <meta content="@metebalci" property="twitter:creator"/>
+  <meta content="A Minimum Complete Example of Debian Packaging and Launchpad PPA: hellodeb" property="twitter:title"/>
+  
+  <link href="https://metebalci.com/blog/a-minimum-complete-example-of-debian-packaging-and-launchpad-ppa-hellodeb/" rel="canonical"/>
+  <link href="https://mastodon.social/@metebalci" rel="me"/>
+  
+  <style media="screen">
+   @media(min-width:1201px){body{width:1200px}}@font-face{font-family:"Berkeley Mono" src:url("/fonts/BerkeleyMono-Regular.woff2") format('woff2'),url("/fonts/BerkeleyMono-Regular.woff") format('woff');font-style:normal;font-weight:400}@font-face{font-family:"Berkeley Mono" src:url("/fonts/BerkeleyMono-Bold.woff2") format('woff2'),url("/fonts/BerkeleyMono-Bold.woff") format('woff');font-style:normal;font-weight:700}@font-face{font-family:"Berkeley Mono" src:url("/fonts/BerkeleyMono-Italic.woff2") format('woff2'),url("/fonts/BerkeleyMono-Italic.woff") format('woff');font-style:italic;font-weight:400}@font-face{font-family:"Berkeley Mono" src:url("/fonts/BerkeleyMono-BoldItalic.woff2") format('woff2'),url("/fonts/BerkeleyMono-BoldItalic.woff") format('woff');font-style:italic;font-weight:700}body{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;margin:auto;padding:1rem}body footer{display:flex;flex-direction:row;justify-content:space-between}body header nav{margin-bottom:2rem;display:flex;flex-direction:row;justify-content:flex-start;align-items:flex-start;align-content:flex-start;gap:1rem}body header nav div{text-align:center}body header nav div:first-child{padding-left:0}body header nav div:last-child{padding-right:0}body header nav{font-size:1.25rem;font-weight:700;text-transform:uppercase}.toc li{list-style-type:circle;list-style-position:outside;margin:0}.toc ul{margin:0}pre{overflow-x:auto}a{text-decoration:none}li{list-style-type:disc}ul{list-style-type:disc;list-style-position:outside}ol{list-style-type:decimal}.post-items ul{list-style:none;list-style-type:none}.post-items li{list-style:none;list-style-type:none}hr{border:0;border-top:1px solid gray;border-top:1px solid #999}html{font-family:berkeley mono,monospace}body{color:red;line-height:1.625rem;font-weight:400;text-rendering:optimizeLegibility!important}.post-item-title{font-size:1rem}.post-item-date-container{display:flex;flex-direction:column}.post-item-date{font-size:.8rem}.markdown h1{font-size:1.9375rem;line-height:2.25rem;font-weight:700;background-color:red;color:#000}.page-title h1{font-size:1.9375rem;line-height:2.25rem;font-weight:700}h2{font-size:1.5625rem;line-height:1.625rem;font-weight:700}h3{font-size:1.25rem;line-height:1.625rem;font-weight:700}h4{font-size:1rem;line-height:1.625rem}h5{font-size:1rem;line-height:1.625rem}h6{font-size:1rem;line-height:1.625rem}.markdown{font-size:1rem}strong,mark{font-weight:700}.post-items ul{padding:0}.post-items li{margin-bottom:2rem}.rss{padding-right:2rem;padding-bottom:2rem}.privacy{padding-right:2rem;padding-bottom:2rem}.copyright{padding-left:2rem;padding-bottom:2rem}img{max-width:100%;max-height:100%}h1{margin-top:1.625rem;margin-bottom:1.625rem}h2{margin-top:1.625rem;margin-bottom:1rem}h3{margin-top:1.625rem;margin-bottom:1rem}h4{margin-top:1.625rem;margin-bottom:1rem}h5{margin-top:1.625rem;margin-bottom:1rem}h6{margin-top:1.625rem;margin-bottom:1rem}li:first-child{margin-top:0;margin-left:0}li:last-child{margin-bottom:0;margin-right:0}code{padding:.15rem .5rem}pre{max-width:100%;margin:0;padding:1rem;overflow-x:auto}pre code{padding:0}hr{position:relative;margin:1.75rem 0}.post-items ul{padding:0}.post-items li{margin-bottom:2rem}.page-title{margin-bottom:1rem}p,ul,ol,pre,table,blockquote{margin-top:0;margin-bottom:1.625rem}h1,h2,h3,h4,h5,h6{text-align:left}table{margin-bottom:1rem;max-width:100%;overflow-x:auto;table-layout:fixed;border:1px solid #e5e5e5;border-collapse:collapse}td,th{padding:.25rem .5rem;border:1px solid #e5e5e5;overflow:hidden}tbody tr:nth-child(odd) td,tbody tr:nth-child(odd) th{}figure{background:#fff;margin:0;margin-bottom:1rem;padding:0;display:flex;flex-direction:column;flex-wrap:wrap;align-items:center;justify-content:center}figure img{margin:0;padding:0;object-fit:scale-down}blockquote{padding:.5rem 1rem;margin:.8rem 0;border-left:.25rem solid #e5e5e5}blockquote p:last-child{margin-bottom:0}thead th:empty{display:none}.consent-button{padding:.5rem;margin-bottom:.5rem;font-size:1rem;font-weight:700;background-color:#ccc;color:#000}.consent-banner{display:none;position:fixed;padding:1rem;top:4rem;left:0;right:0;background-color:#000;color:#ccc;padding:"2rem";textalign:"left"}main{margin-right:2rem;flex-grow:1;flex-shrink:1;overflow-y:hidden}
+  </style>
+  <style media="screen" type="text/css">
+   body{color:#272822}body header nav div a{color:#272822}a{color:#00f}a:hover{color:#000}.markdown code{background-color:#272822;color:#eee}.markdown pre,.markdown pre code{background-color:#272822;color:#eee}.hljs,.hljs-subst,.hljs-variable{color:#87a5d2}.hljs-type{color:#97d28b}.hljs-quote{color:#ffcb8d}.hljs-string,.hljs-number,.hljs-selector-id,.hljs-selector-class,.hljs-template-tag,.hljs-deletion{color:#96c2d7}.hljs-comment{color:#6a7a8b}.hljs-regexp,.hljs-symbol,.hljs-template-variable{color:#ffcb8d}.hljs-keyword,.hljs-attribute,.hljs-meta-keyword,.hljs-doctag,.hljs-name{color:#97d28b}.hljs-link,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-title,.hljs-section{color:#ff8e91}.hljs-built_in,.hljs-bullet,.hljs-code,.hljs-addition{color:#97d28b}div.tag{color:#000;background-color:#cacaca}
+  </style>
+  
+ </head>
+ <body>
+  <main>
+   <div class="main">
+    <div class="page-title">
+     <h1 class="page-title">
+      A Minimum Complete Example of Debian Packaging and Launchpad PPA: hellodeb
+     </h1>
+     <div class="post-item-date-container">
+      <span class="post-item-date">
+       April 24, 2022
+      </span>
+     </div>
+    </div>
+    <div class="markdown">
+     <p>
+      There are many sites explaining how to create debian packages, but it seems to me none or only a few of them explains it at the very basic level.
+     </p>
+     <p>
+      The companion project of this post is
+      <a href="https://github.com/metebalci/hellodeb">
+       hellodeb@github
+      </a>
+      . I will explain how to generate the source package, architecture specific binary packages and an architecture independent binary package. Additionally, I will briefly mention uploading the source package to a launchpad PPA.
+     </p>
+     <p>
+      This post does not cover everything but it shows a minimum complete example, a hello world for Debian packaging,
+      <code>
+       hellodeb
+      </code>
+      . It does not use anything other than the basic tools provided in
+      <code>
+       dpkg-dev
+      </code>
+      package, particularly it neither uses
+      <code>
+       dh_make
+      </code>
+      nor
+      <code>
+       debuild
+      </code>
+      .
+     </p>
+     <p>
+      The main reference for this post is
+      <a href="https://www.debian.org/doc/debian-policy/index.html">
+       Debian Policy Manual
+      </a>
+      , and the other sources are the manual pages of the tools used.
+     </p>
+     <p>
+      I am using Ubuntu 20.04 for this post, and as you know, Ubuntu also uses Debian packaging.
+     </p>
+     <h2 id="hellodeb">
+      hellodeb
+     </h2>
+     <p>
+      My example project
+      <a href="https://github.com/metebalci/hellodeb">
+       hellodeb
+      </a>
+      contains:
+     </p>
+     <ul>
+      <li>
+       a C source file (hellodeb.c)
+      </li>
+      <li>
+       a manual page (hellodeb.1)
+      </li>
+     </ul>
+     <p>
+      It also contains
+      <code>
+       debian
+      </code>
+      directory which includes the meta-data for packaging.
+     </p>
+     <p>
+      Additionally, there are a few bash scripts:
+     </p>
+     <ul>
+      <li>
+       <code>
+        build-package.sh
+       </code>
+       : runs
+       <code>
+        dpkg-buildpackage
+       </code>
+       with the provided build type (source, binary etc.) and other arguments which are directly passed to
+       <code>
+        dpkg-buildpackage
+       </code>
+      </li>
+      <li>
+       <code>
+        build-source.sh
+       </code>
+       : runs
+       <code>
+        dpkg-source --build .
+       </code>
+      </li>
+      <li>
+       <code>
+        clean.sh
+       </code>
+       : removes all generated files and returns the directory to initial state
+      </li>
+      <li>
+       <code>
+        test.sh
+       </code>
+       : used to check the build in a CI, not used in this post
+      </li>
+     </ul>
+     <p>
+      The reason I have these scripts is that before running the package build, they clean the directory, create a new
+      <code>
+       build
+      </code>
+      directory and copy the debian directory and source files there and runs
+      <code>
+       dpkg-buildpackage
+      </code>
+      and
+      <code>
+       dpkg-source
+      </code>
+      under that directory.
+     </p>
+     <p>
+      The files in hellodeb repository might have a slightly different content than what is shown in this post, because I fix or improve small issues while writing the post.
+     </p>
+     <h2 id="debian-packages">
+      Debian Packages
+     </h2>
+     <p>
+      There are two types of packages: source and binary.
+     </p>
+     <p>
+      Source packages are built from the original source code (e.g. of a program). Then the build rules file (a Makefile) is run which is expected to generate binary packages. This process is controlled with some additional (meta-data) files.
+     </p>
+     <p>
+      By the use of meta data, (maintainer) scripts and tools, Debian packaging handles the installation, removal and dependencies of packages.
+     </p>
+     <p>
+      There are different source package formats, and in this post
+      <code>
+       3.0 (quilt)
+      </code>
+      is used. In this format, a source package contains three files:
+     </p>
+     <ul>
+      <li>
+       original source,
+       <code>
+        orig.tar.xz
+       </code>
+      </li>
+      <li>
+       debian source (meta-data),
+       <code>
+        debian.tar.xz
+       </code>
+      </li>
+      <li>
+       source control,
+       <code>
+        dsc
+       </code>
+      </li>
+     </ul>
+     <p>
+      Binary package contains a single file:
+     </p>
+     <ul>
+      <li>
+       debian binary package,
+       <code>
+        deb
+       </code>
+      </li>
+     </ul>
+     <p>
+      In addition to these files, there are two more files.
+     </p>
+     <ul>
+      <li>
+       build record,
+       <code>
+        buildinfo
+       </code>
+      </li>
+      <li>
+       upload control,
+       <code>
+        changes
+       </code>
+      </li>
+     </ul>
+     <p>
+      My understanding is that both the source and binary packages of a project are supposed to be built. Maybe it is possible and it sounds like it should be possible to build only one, but the tools assume you have the source code and you are going to build source package first and then the binary package(s) -the reason I say this might be more clear later-.
+     </p>
+     <p>
+      Multiple binary packages do not mean one binary package for each architecture (i386, amd64 etc.). Each binary package can consist of different things from the same source code such as the core or common files, documentation, examples etc. For example, all packages of tomcat9:
+     </p>
+     <pre tabindex="0"><code>$ apt-cache search tomcat9 | cut -f1 -d' '
+
+libtomcat9-embed-java
+libtomcat9-java
+tomcat9
+tomcat9-admin
+tomcat9-common
+tomcat9-docs
+tomcat9-examples
+tomcat9-user
+</code></pre>
+     <p>
+      are built from the same source package called tomcat9. When you want to get the sources of, for example, tomcat9-admin, it redirects you to the correct source package:
+     </p>
+     <pre tabindex="0"><code>$ apt source tomcat9-admin
+
+Reading package lists... Done
+Picking 'tomcat9' as source package instead of 'tomcat9-admin'
+
+...&lt;output continues&gt;...
+</code></pre>
+     <h2 id="dpkg">
+      dpkg
+     </h2>
+     <p>
+      Debian packaging tools,
+      <code>
+       dpkg
+      </code>
+      suite, are inter-connected. You can use
+      <code>
+       dpkg
+      </code>
+      with some options, which runs
+      <code>
+       dpkg-deb
+      </code>
+      to build a binary package. You can also use
+      <code>
+       dpkg-buildpackage
+      </code>
+      and let it execute various steps, run various tools in
+      <code>
+       dpkg
+      </code>
+      suite, depending on what you requested. On its manual page, there is a short summary of all the steps
+      <code>
+       dpkg-buildpackage
+      </code>
+      takes, it is a good reference. Also,
+      <code>
+       dpkg-buildpackage
+      </code>
+      is a Perl script like other similar tools in dpkg suite. You can look at the source code of these scripts when needed.
+     </p>
+     <p>
+      If you want to build only a source package, without any other files and without signing them, you can use
+      <code>
+       dpkg-source
+      </code>
+      directly, however in all other cases
+      <code>
+       dpkg-buildpackage
+      </code>
+      is the best choice, which also calls
+      <code>
+       dpkg-source
+      </code>
+      to build the source package.
+     </p>
+     <p>
+      <code>
+       dpkg
+      </code>
+      comes with the base installation of Ubuntu, but you need to install
+      <code>
+       dpkg-dev
+      </code>
+      package to generate packages.
+     </p>
+     <p>
+      A (package) build triggered by
+      <code>
+       dpkg-buildpackage
+      </code>
+      can be one of the following (provided with
+      <code>
+       --build
+      </code>
+      option):
+     </p>
+     <ul>
+      <li>
+       <code>
+        source
+       </code>
+       : builds only the source package
+      </li>
+      <li>
+       <code>
+        any
+       </code>
+       : builds architecture specific binary packages e.g. amd64
+      </li>
+      <li>
+       <code>
+        all
+       </code>
+       : builds architecture independent binary packages e.g. documentation, pure Java or Python
+      </li>
+      <li>
+       <code>
+        binary
+       </code>
+       : an alias for any and all, thus all possible binary packages
+      </li>
+      <li>
+       <code>
+        full
+       </code>
+       : an alias for source and binary, thus all possible packages
+      </li>
+     </ul>
+     <p>
+      The options
+      <code>
+       any
+      </code>
+      and
+      <code>
+       all
+      </code>
+      have also a meaning for
+      <code>
+       Architecture
+      </code>
+      (meta-data) of a package.
+      <code>
+       any
+      </code>
+      is used as a wildcard to mean any architecture the OS is supposed to run (this really means many many architectures), whereas
+      <code>
+       all
+      </code>
+      is used for documentation and with platform independent code like Java and it means this package is architecture independent (it runs on all architectures without modification). I checked a few packages and it seems to me some packages are using
+      <code>
+       any
+      </code>
+      as a shortcut when they support a number of architectures (but probably not all). On the other hand, some packages are NOT using
+      <code>
+       any
+      </code>
+      and explicitly state the supported architectures (e.g. amd64 armhf arm64 i386 mips mips64).
+     </p>
+     <p>
+      As mentioned before, the process of running
+      <code>
+       dpkg-buildpackage --build=source
+      </code>
+      and
+      <code>
+       dpkg-source --build .
+      </code>
+      is not the same.
+      <code>
+       dpkg-source
+      </code>
+      only builds the source package, whereas
+      <code>
+       dpkg-buildpackage
+      </code>
+      can run checks and do other things like generating buildinfo and changes and signing the files.
+     </p>
+     <p>
+      <code>
+       dpkg-source
+      </code>
+      and
+      <code>
+       dpkg-buildpackage
+      </code>
+      is run in a directory with source code and
+      <code>
+       debian
+      </code>
+      folder but they generate the packages in the parent directory. In some versions of source format, the directory should have a particular name, but for
+      <code>
+       3.0 (quilt)
+      </code>
+      there is no such constraint, so I am simply using the name
+      <code>
+       build
+      </code>
+      .
+     </p>
+     <h2 id="process">
+      Process
+     </h2>
+     <p>
+      I first assumed source and binary packages are/can be created independently. This is correct to some extent (they are not created simultaneously) but -I think- the implied process is a bit different then what I thought, so it was a little confusing for me.
+     </p>
+     <p>
+      It seems the assumption is that (being a packager) you first get the original source files and then add
+      <code>
+       debian
+      </code>
+      directory and meta-data files including the rules file to build packages. The dpkg tools are run in such a way, it generates first the source package and then all other binary packages in a single run.
+     </p>
+     <p>
+      So the source and the binary package build processes are intermixed. Another proof of this is the
+      <code>
+       debian/control
+      </code>
+      file, which has to have at least two paragraphs (sections), one for source and other for binary package. This means, a source package always has a binary package and vice versa. So the implied process naturally makes sense.
+     </p>
+     <p>
+      For the demonstration purpose, I also provide
+      <code>
+       debian
+      </code>
+      directory in the hellodeb project. However, build scripts
+      <code>
+       build-source.sh
+      </code>
+      and
+      <code>
+       build-package.sh
+      </code>
+      create a correctly named and versioned original source tarball and create a directory with the debian directory and copies the source files also there, in effect they imitate the procedure I described above.
+     </p>
+     <h2 id="source-package-with-dpkg-source">
+      Source Package (with dpkg-source)
+     </h2>
+     <p>
+      The meta data for source packages stay under the folder
+      <code>
+       debian
+      </code>
+      . You must have at least
+      <code>
+       debian/changelog
+      </code>
+      and
+      <code>
+       debian/control
+      </code>
+      .
+     </p>
+     <p>
+      The directory names can be a bit confusing. Source packages use
+      <code>
+       debian
+      </code>
+      whereas binary packages use
+      <code>
+       DEBIAN
+      </code>
+      for the meta data directory. You will see this in Debian Policy Manual and other places, it is not a typo.
+     </p>
+     <p>
+      <code>
+       debian/changelog
+      </code>
+      describes the changes. However, the more important thing is it sets the name (hellodeb), version (1.0-4) and distribution of the package. When distribution name is UNRELEASED, it means this package build is not targeted for a particular distribution (e.g. focal for Ubuntu 20.04), so it does not need to be signed. This file
+      <code>
+       changelog
+      </code>
+      has a very rigid structure.
+     </p>
+     <pre tabindex="0"><code>$ cat debian/changelog
+
+hellodeb (1.0-4) UNRELEASED; urgency=low
+
+  * Initial release.
+
+ -- Mete Balci &lt;metebalci@gmail.com&gt;  Tue, 12 Apr 2022 10:21:28 +0000
+</code></pre>
+     <p>
+      The version may include both the upstream/original version of the code and also the Debian revision (due to packaging). Above,
+      <code>
+       1.0
+      </code>
+      is the upstream version, and
+      <code>
+       4
+      </code>
+      is the Debian revision. It is a good idea to have a Debian revision, because you may make a mistake during packaging and you may not be able to upload the exact same version again, so you can just change the Debian revision.
+     </p>
+     <p>
+      The next file is
+      <code>
+       debian/control
+      </code>
+      , so called source package control file. This file contains fields (name and value pairs) grouped in paragraphs (sections) separated by an empty line. First paragraph contains information about the source package. The second and other paragraphs are about the binary packages. This file has to have at least two paragraphs.
+     </p>
+     <pre tabindex="0"><code>$ cat debian/control
+
+Source: hellodeb
+Maintainer: Mete Balci &lt;metebalci@gmail.com&gt;
+Standards-Version: 4.5.0
+Priority: optional
+Section: utils
+
+Package: hellodeb
+Architecture: amd64 arm64 armhf
+Description: hello world for Debian packaging
+ This is an hello program to demonstrate
+ Debian packaging.
+
+Package: hellodeb-doc
+Architecture: all
+Description: hellodeb documentation
+</code></pre>
+     <p>
+      Other than Priority and Section, all other fields above are mandatory. There is a source package (first), architecture specific binary package for three architectures (second) and an architecture independent package (third) for documentation. As you can see, each package can be named differently. It is OK to have the source and a binary package to have same name but naturally different binary packages should have different names (like hellodeb-doc above).
+     </p>
+     <p>
+      Priority and Section are recommended, and if not provided, a warning is issued. A detailed explanation about these fields can be found in the Debian Policy Manual. The Standards-Version field indicates the Debian Policy Manual version this file complies.
+     </p>
+     <p>
+      With only these two files (remove other things under
+      <code>
+       debian
+      </code>
+      if you want to try this with hellodeb), if you run
+      <code>
+       build-source.sh
+      </code>
+      which runs
+      <code>
+       dpkg-source --build .
+      </code>
+      , it generates the source package, but with a warning. The warning is about the format of source package which defaults to 1.0. The latest version of source packages is 3.0 and there are multiple alternatives or subtypes (see man dpkg-source for more information). This should be specified in
+      <code>
+       debian/source/format
+      </code>
+      file.
+     </p>
+     <pre tabindex="0"><code>$ cat debian/source/format
+
+3.0 (quilt)
+</code></pre>
+     <p>
+      If source format is 2.0 or newer, default compression of archive is xz. For 1.0, it is gzip (gz).
+     </p>
+     <p>
+      I first started using
+      <code>
+       3.0 (native)
+      </code>
+      format but I think many packages use
+      <code>
+       3.0 (quilt)
+      </code>
+      format so I also switched to that. Although the basics are the same or similar, there are some differences between them. The scripts
+      <code>
+       build-source.sh
+      </code>
+      and
+      <code>
+       build-package.sh
+      </code>
+      may not work for other formats.
+     </p>
+     <p>
+      When you also have the
+      <code>
+       debian/source/format
+      </code>
+      file, you can run
+      <code>
+       build-source.sh
+      </code>
+      :
+     </p>
+     <pre tabindex="0"><code>$ ./build-source.sh 
+
+hellodeb.c
+hellodeb.1
+dpkg-source: info: using source format '3.0 (quilt)'
+dpkg-source: info: building hellodeb using existing ./hellodeb_1.0.orig.tar.xz
+dpkg-source: info: building hellodeb in hellodeb_1.0-7.debian.tar.xz
+dpkg-source: info: building hellodeb in hellodeb_1.0-7.dsc
+</code></pre>
+     <p>
+      The same result can also be achived with
+      <code>
+       dpkg-buildpackage --build=source
+      </code>
+      , and this is actually what is done at first when
+      <code>
+       dpkg-buildpackage
+      </code>
+      is run to build the binary packages. However, you cannot run
+      <code>
+       dpkg-buildpackage
+      </code>
+      only with these files, because it is checking the files required for building the binary packages as well.
+     </p>
+     <p>
+      The generated
+      <code>
+       dsc
+      </code>
+      file is also a control file, which contains information about the packages e.g. packages that can be built, checksums of source.tar.xz file.
+     </p>
+     <pre tabindex="0"><code>$ cat hellodeb_1.0-7.dsc 
+
+Format: 3.0 (quilt)
+Source: hellodeb
+Binary: hellodeb, hellodeb-doc
+Architecture: amd64 arm64 armhf all
+Version: 1.0-7
+Maintainer: Mete Balci &lt;metebalci@gmail.com&gt;
+Standards-Version: 4.5.0
+Package-List:
+ hellodeb deb utils optional arch=amd64,arm64,armhf
+ hellodeb-doc deb utils optional arch=all
+Checksums-Sha1:
+ 93a7c60ecd983d6edc4acd6a63d8d3bfa200a70a 432 hellodeb_1.0.orig.tar.xz
+ cd5594120dcea179b81bc8143c1b2c4391135cc2 1472 hellodeb_1.0-7.debian.tar.xz
+Checksums-Sha256:
+ 085592fbda0cf0475242e6a43278e97f9fc491bdb976e794d573fd938cf949af 432 hellodeb_1.0.orig.tar.xz
+ d9b23f56c1f905b0c55ff1c92aa35cae1d1c811051c7b36f15aabdbe56452ae7 1472 hellodeb_1.0-7.debian.tar.xz
+Files:
+ 5bbaabb2e7d782425c5e66830e0bc805 432 hellodeb_1.0.orig.tar.xz
+ 92b587958d619a4c3c880ee61c459b8f 1472 hellodeb_1.0-7.debian.tar.xz
+</code></pre>
+     <p>
+      The .orig.tar.xz file contains the source code:
+     </p>
+     <pre tabindex="0"><code>$ tar tvf hellodeb_1.0.orig.tar.xz | awk '{print $NF}'
+
+hellodeb.c
+hellodeb.1
+</code></pre>
+     <p>
+      and debian.tar.xz file contains only the debian directory with meta-data files.
+     </p>
+     <pre tabindex="0"><code>$ tar tvf hellodeb_1.0-7.debian.tar.xz | awk '{print $NF}'
+
+debian/
+debian/changelog
+debian/control
+debian/copyright
+debian/rules
+debian/source/
+debian/source/format
+</code></pre>
+     <h2 id="copyright">
+      Copyright
+     </h2>
+     <p>
+      It seems
+      <code>
+       dpkg-source
+      </code>
+      does not generate any warning, but the copyright information is also a must. This is given in
+      <code>
+       debian/copyright
+      </code>
+      file. In order to make it machine readable, it also has a simple structure:
+     </p>
+     <pre tabindex="0"><code>$ cat debian/copyright
+
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: hellodeb
+Upstream-Contact: info@metebalci.com
+Source: https://github.com/metebalci/hellodeb
+
+Files: *
+Copyright: 2022 Mete Balci
+License: GPL-3
+
+License: GPL-3
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+</code></pre>
+     <p>
+      It is possible to specify different copyrights for different files, but above all the files (*) have the same GPL-3 copyright.
+     </p>
+     <h2 id="signing-key">
+      Signing Key
+     </h2>
+     <p>
+      If you already know about PGP and have a key that you can use, skip this section. If not, you need to have a local PGP key to sign packages. The steps below are enough to have a working example, but probably not good enough for a professional use.
+     </p>
+     <ul>
+      <li>
+       create a key with
+       <code>
+        gpg --full-gen-key
+       </code>
+       , I select RSA and RSA (default), 4096 bits and key does not expire options.
+      </li>
+      <li>
+       send the key to Ubuntu keyserver with
+       <code>
+        gpg --keyserver keyserver.ubuntu.com --send-keys &lt;fingerprint&gt;
+       </code>
+       . You can see the fingerprint with
+       <code>
+        gpg --list-keys
+       </code>
+       , it is the long hexadecimal string.
+      </li>
+     </ul>
+     <p>
+      If you want to use a Launchpad PPA, you need to add the fingerprint of this key to Launchpad and verify it. You have to wait for some minutes before adding the fingerprint to Launchpad.
+     </p>
+     <ul>
+      <li>
+       enter the fingerprint of the key to your Launchpad OpenPGP keys section, the same fingerprint format requested (groups of 4 digits, separated by spaces) can be printed with
+       <code>
+        gpg --fingerprint
+       </code>
+       .
+      </li>
+      <li>
+       when the verification e-mail arrives, run
+       <code>
+        gpg
+       </code>
+       and paste the PGP MESSAGE part, this will show a URL that you need to open in a browser, and this completes the Launchpad OpenPGP key setup.
+      </li>
+     </ul>
+     <h2 id="signed-source-package-with-dpkg-buildpackage">
+      Signed Source Package (with dpkg-buildpackage)
+     </h2>
+     <p>
+      Another way to build the source package is using
+      <code>
+       dpkg-buildpackage
+      </code>
+      with
+      <code>
+       --build=source
+      </code>
+      option. However, by default, it wants to sign the files unless disturbution name is UNRELEASED, so you need to create the signing key first. If you want to run
+      <code>
+       dpkg-buildpackage
+      </code>
+      but do not want it to sign the files, you can use
+      <code>
+       --no-sign
+      </code>
+      option.
+     </p>
+     <p>
+      Also, although it is not very necessary for a source package,
+      <code>
+       debian/rules
+      </code>
+      file has to be present for this to work. Either use the one in hellodeb repository, or just create an empty file if you want to try this. You can see on the output below, its
+      <code>
+       clean
+      </code>
+      target is called before calling
+      <code>
+       dpkg-source
+      </code>
+      .
+     </p>
+     <p>
+      At the beginning of the post, I showed
+      <code>
+       debian/changelog
+      </code>
+      stating distribution name as UNRELEASED. Now, I am using the version in the repository and distribution name is focal (Ubuntu 20.04). If you keep it as UNRELEASED,
+      <code>
+       dpkg-buildpackage
+      </code>
+      will run and say this package is UNRELEASED so no need to sign the files.
+     </p>
+     <pre tabindex="0"><code>$ ./build-package.sh source
+
+hellodeb.c
+hellodeb.1
+dpkg-buildpackage: info: source package hellodeb
+dpkg-buildpackage: info: source version 1.0-8
+dpkg-buildpackage: info: source distribution focal
+dpkg-buildpackage: info: source changed by Mete Balci &lt;metebalci@gmail.com&gt;
+ dpkg-source --before-build .
+ fakeroot debian/rules clean
+rm -f hellodeb
+rm -f hellodeb.1.gz
+rm -rf debian/tmp
+ dpkg-source -b .
+dpkg-source: info: using source format '3.0 (quilt)'
+dpkg-source: info: building hellodeb using existing ./hellodeb_1.0.orig.tar.xz
+dpkg-source: info: building hellodeb in hellodeb_1.0-8.debian.tar.xz
+dpkg-source: info: building hellodeb in hellodeb_1.0-8.dsc
+ dpkg-genbuildinfo --build=source
+ dpkg-genchanges --build=source &gt;../hellodeb_1.0-8_source.changes
+dpkg-genchanges: info: not including original source code in upload
+ dpkg-source --after-build .
+dpkg-buildpackage: info: binary and diff upload (original source NOT included)
+ signfile hellodeb_1.0-8.dsc
+
+ signfile hellodeb_1.0-8_source.buildinfo
+
+ signfile hellodeb_1.0-8_source.changes
+</code></pre>
+     <p>
+      Pay attention to the line with
+      <code>
+       (original source NOT included)
+      </code>
+      output. By default, if the upstream version of this build (1.0 in 1.0-7) in
+      <code>
+       debian/changelog
+      </code>
+      is the same as the last change (1.0 in 1.0-6), the source (orig.tar.xz) is not included in this source package build, because the assumption is at least a previous version of the source package has this source.
+     </p>
+     <p>
+      As you have seen above,
+      <code>
+       buildinfo
+      </code>
+      and
+      <code>
+       changes
+      </code>
+      files are also produced in addition to
+      <code>
+       dsc
+      </code>
+      file.
+      <code>
+       dsc
+      </code>
+      file is produced by
+      <code>
+       dpkg-source
+      </code>
+      but
+      <code>
+       buildinfo
+      </code>
+      and
+      <code>
+       changes
+      </code>
+      are produced by
+      <code>
+       dpkg-genbuildinfo
+      </code>
+      and
+      <code>
+       dpkg-genchanges
+      </code>
+      tools and these are only run when
+      <code>
+       dpkg-buildpackage
+      </code>
+      is used.
+     </p>
+     <p>
+      <code>
+       buildinfo
+      </code>
+      file is just a record of some information like dependencies of the system that has built this package.
+     </p>
+     <p>
+      <code>
+       changes
+      </code>
+      file is called upload control file. Basically the files listed in
+      <code>
+       changes
+      </code>
+      are uploaded for example to Launchpad. So this file decides if the original source (orig.tar.xz) is included or not.
+     </p>
+     <p>
+      As you can on the last lines of the output above,
+      <code>
+       dsc
+      </code>
+      ,
+      <code>
+       buildinfo
+      </code>
+      and
+      <code>
+       changes
+      </code>
+      files are signed.
+     </p>
+     <p>
+      Because Launchpad requires only the source package, at this point you can upload this signed source package to a Launchpad PPA. However, you probably want to test it first, so you will create the binary packages anyway. So I will explain binary packages first and then upload the source package to my Launchpad PPA.
+     </p>
+     <h2 id="binary-packages">
+      Binary Packages
+     </h2>
+     <p>
+      Until now, I showed running
+      <code>
+       dpkg-source
+      </code>
+      and
+      <code>
+       dpkg-buildpackage --build=source
+      </code>
+      . All other options for
+      <code>
+       --build
+      </code>
+      involve building one or more binary packages. The only extra file that is required is a proper
+      <code>
+       debian/rules
+      </code>
+      which is a Makefile and a set of three targets of this Makefile is called depending on the value of
+      <code>
+       --build
+      </code>
+      option. If the option is:
+     </p>
+     <ul>
+      <li>
+       <code>
+        full
+       </code>
+       (or if it is omitted): clean, build and binary targets are run.
+      </li>
+      <li>
+       <code>
+        all
+       </code>
+       : clean, build-indep and binary-indep
+      </li>
+      <li>
+       <code>
+        any
+       </code>
+       : clean, build-arch and binary-arch
+      </li>
+      <li>
+       <code>
+        binary
+       </code>
+       : clean, build and binary
+      </li>
+      <li>
+       <code>
+        source
+       </code>
+       : as a reminder, only clean target is called for source
+      </li>
+     </ul>
+     <p>
+      The difference between
+      <code>
+       full
+      </code>
+      and
+      <code>
+       binary
+      </code>
+      is that
+      <code>
+       full
+      </code>
+      also builds the source packages, but only the clean target of
+      <code>
+       debian/rules
+      </code>
+      file is used.
+     </p>
+     <p>
+      For the sake of completeness, I should mention, even if the source package build is not requested,
+      <code>
+       dpkg-buildpackage
+      </code>
+      still calls
+      <code>
+       dpkg-source
+      </code>
+      with
+      <code>
+       --before-build
+      </code>
+      at the very start of any execution and
+      <code>
+       --after-build
+      </code>
+      just before signing the files. These call source format (
+      <code>
+       debian/source/format
+      </code>
+      ) specific actions like applying patches.
+     </p>
+     <p>
+      As you have realized, clean and a different set of 2 targets are run anytime
+      <code>
+       dpkg-buildpackage
+      </code>
+      is invoked. It is totally up to you, how you write this
+      <code>
+       rules
+      </code>
+      file, and there are helper utilities to simplify this but I am not going to use any such helper in this post.
+     </p>
+     <p>
+      In many projects, the project has its own Makefile, so
+      <code>
+       rules
+      </code>
+      can invoke the actual Makefile. In this post, I am not using any other Makefile, so my
+      <code>
+       rules
+      </code>
+      file actually builds
+      <code>
+       hellodeb.c
+      </code>
+      . It is expected the binary executables are stripped from unnecessary information, so it is usually done after the build. The man page
+      <code>
+       hellodeb.1
+      </code>
+      does not require any compilation, it is simply compressed and copied.
+     </p>
+     <p>
+      There are two additional tools that are used when building binary packages. These are called from
+      <code>
+       rules
+      </code>
+      explicitly. First is
+      <code>
+       dpkg-gencontrol
+      </code>
+      , which generates the binary package control file at
+      <code>
+       DEBIAN/control
+      </code>
+      . The other is
+      <code>
+       dpkg-deb
+      </code>
+      , which actually creates the binary package from a directory. By default, the target directory is
+      <code>
+       debian/tmp
+      </code>
+      , so it is also used in this post.
+     </p>
+     <p>
+      It is a bit confusing all the directories, so I summarize again:
+     </p>
+     <ul>
+      <li>
+       The source code is under
+       <code>
+        hellodeb_1.0
+       </code>
+      </li>
+      <li>
+       The source package meta-data directory is
+       <code>
+        hellodeb_1.0/debian
+       </code>
+      </li>
+      <li>
+       <code>
+        dpkg-gencontrol
+       </code>
+       creates binary package control file at
+       <code>
+        hellodeb_1.0/debian/tmp/DEBIAN
+       </code>
+      </li>
+      <li>
+       The folder
+       <code>
+        hellodeb_1.0/debian/tmp
+       </code>
+       is used to build the binary package by
+       <code>
+        dpkg-deb
+       </code>
+       , so the binary files to be installed/copied to the target system is under this
+       <code>
+        hellodeb_1.0/debian/tmp
+       </code>
+       folder e.g.
+       <code>
+        hellodeb_1.0/debian/tmp/usr/bin/hellodeb
+       </code>
+       which is copied to
+       <code>
+        /usr/bin/hellodeb
+       </code>
+       in the target system.
+      </li>
+      <li>
+       When building multiple packages (e.g. hellodeb and hellodeb-doc), naturally you need to have a clean
+       <code>
+        debian/tmp
+       </code>
+       folder to start with.
+      </li>
+     </ul>
+     <p>
+      Lets build binary (both any and all) packages:
+     </p>
+     <pre tabindex="0"><code>$ ./build-package.sh binary
+
+mete@lemur:~/hellodeb$ ./build-package.sh binary
+hellodeb.c
+hellodeb.1
+dpkg-buildpackage: info: source package hellodeb
+dpkg-buildpackage: info: source version 1.0-8
+dpkg-buildpackage: info: source distribution focal
+dpkg-buildpackage: info: source changed by Mete Balci &lt;metebalci@gmail.com&gt;
+dpkg-buildpackage: info: host architecture amd64
+ dpkg-source --before-build .
+ fakeroot debian/rules clean
+rm -f hellodeb
+rm -f hellodeb.1.gz
+rm -rf debian/tmp
+ debian/rules build
+x86_64-linux-gnu-gcc `dpkg-buildflags --get CFLAGS` -Wall -o hellodeb hellodeb.c
+gzip -c hellodeb.1 &gt; hellodeb.1.gz
+ fakeroot debian/rules binary
+rm -rf debian/tmp
+mkdir -p debian/tmp/DEBIAN
+dpkg-gencontrol -phellodeb
+mkdir -p debian/tmp/usr/bin
+cp hellodeb debian/tmp/usr/bin
+strip --strip-unneeded --remove-section=.comment --remove-section=.note debian/tmp/usr/bin/hellodeb
+dpkg-deb --build debian/tmp ../hellodeb_1.0-8_amd64.deb
+dpkg-deb: building package 'hellodeb' in '../hellodeb_1.0-8_amd64.deb'.
+rm -rf debian/tmp
+mkdir -p debian/tmp/DEBIAN
+dpkg-gencontrol -phellodeb-doc
+mkdir -p debian/tmp/usr/share/man/man1
+cp hellodeb.1.gz debian/tmp/usr/share/man/man1
+dpkg-deb --build debian/tmp ../hellodeb-doc_1.0-8_all.deb
+dpkg-deb: building package 'hellodeb-doc' in '../hellodeb-doc_1.0-8_all.deb'.
+ dpkg-genbuildinfo --build=binary
+ dpkg-genchanges --build=binary &gt;../hellodeb_1.0-8_amd64.changes
+dpkg-genchanges: info: binary-only upload (no source code included)
+ dpkg-source --after-build .
+dpkg-buildpackage: info: binary-only upload (no source included)
+ signfile hellodeb_1.0-8_amd64.buildinfo
+
+ signfile hellodeb_1.0-8_amd64.changes
+</code></pre>
+     <p>
+      If you follow the output messages carefully, you can see everything I have described above (any a little bit more).
+     </p>
+     <p>
+      Because I did not ask for the source package, no
+      <code>
+       dsc
+      </code>
+      file is generated (
+      <code>
+       dpkg-source
+      </code>
+      is not run). However,
+      <code>
+       buildinfo
+      </code>
+      and
+      <code>
+       changes
+      </code>
+      files are generated and signed.
+     </p>
+     <p>
+      At this point, you can go back to
+      <a href="#deconstruction-of-a-full-package-build">
+       Deconstruction of a Full Package Build
+      </a>
+      , and all should make sense.
+     </p>
+     <h2 id="personal-package-archive-on-launchpad">
+      Personal Package Archive on Launchpad
+     </h2>
+     <p>
+      Now I have the source and binary packages but how to distribute them. It is possible to store these in a directory like a local repository but it is not very useful. There are two options: one is to use
+      <a href="https://launchpad.net/">
+       Launchpad
+      </a>
+      to create a Personal package archive and upload the (source) package there (and Launchpad builds the binary packages), and the second is to create a Debian repository that can be accessed with http. PPA does not require any extra effort, but creating a Debian repository requires a web server etc.
+     </p>
+     <p>
+      For a PPA, Launchpad only accepts source packages, the binary packages are created by the launchpad after uploading the source package. Since there are many PPAs and many packages, and some are more important than others, there is a prioritized build queue, and it might take a while for a package to be available. You can select which architectures to build the architecture specific binary packages (like amd64, arm64) and the architecture independent “all” package is built in one architecture only (I believe at the moment it is always amd64), and copied to other architectures for distribution (since it is architecture independent, it should not matter where it is built).
+     </p>
+     <p>
+      The architecture of
+      <code>
+       hellodeb
+      </code>
+      binary package is
+      <code>
+       amd64
+      </code>
+      ,
+      <code>
+       arm64
+      </code>
+      and
+      <code>
+       armhf
+      </code>
+      and the architecture of
+      <code>
+       hellodeb-doc
+      </code>
+      binary package is all. At the moment, Launchpad runs
+      <code>
+       dpkg-buildpackage
+      </code>
+      with
+      <code>
+       --build
+      </code>
+      :
+     </p>
+     <ul>
+      <li>
+       <code>
+        any
+       </code>
+       (meaning architecture specific binary packages) for
+       <code>
+        arm64
+       </code>
+       and
+       <code>
+        armhf
+       </code>
+      </li>
+      <li>
+       <code>
+        binary
+       </code>
+       (meaning both architecture specific and independent binary packages) for
+       <code>
+        amd64
+       </code>
+      </li>
+     </ul>
+     <p>
+      so
+      <code>
+       arm64
+      </code>
+      and
+      <code>
+       armhf
+      </code>
+      architectures build only the
+      <code>
+       hellodeb
+      </code>
+      package, but
+      <code>
+       amd64
+      </code>
+      builds also the
+      <code>
+       hellodeb-doc
+      </code>
+      package. To remind, build type of
+      <code>
+       any
+      </code>
+      runs
+      <code>
+       clean
+      </code>
+      ,
+      <code>
+       build-arch
+      </code>
+      and
+      <code>
+       binary-arch
+      </code>
+      targets of
+      <code>
+       debian/rules
+      </code>
+      and build type of
+      <code>
+       binary
+      </code>
+      runs
+      <code>
+       clean
+      </code>
+      ,
+      <code>
+       build
+      </code>
+      and
+      <code>
+       binary
+      </code>
+      targets (and not
+      <code>
+       build-arch
+      </code>
+      and
+      <code>
+       build-indep
+      </code>
+      separately). This is not very clear and I did not see this information in any documentation yet, so you need to be careful with your
+      <code>
+       debian/rules
+      </code>
+      file, all targets should do what they are supposed to do.
+     </p>
+     <p>
+      Before uploading the source package to your PPA, you naturally need to create an account, create a PPA and verify the OpenPGP key, as I briefly mentioned before.
+     </p>
+     <p>
+      An additional tool,
+      <code>
+       dput
+      </code>
+      , is needed to upload the source package, from
+      <code>
+       dput
+      </code>
+      package. I also installed
+      <code>
+       lintian
+      </code>
+      , which is a tool that checks the package for common errors.
+     </p>
+     <p>
+      After installing
+      <code>
+       dput
+      </code>
+      , I created the configuration file
+      <code>
+       ~/.dput.cf
+      </code>
+      :
+     </p>
+     <pre tabindex="0"><code>$ cat ~/.dput.cf 
+
+[hellodeb]
+fqdn = ppa.launchpad.net
+method = ftp
+incoming = ~metebalci/ubuntu/hellodeb/
+login = anonymous
+allow_unsigned_uploads = 0
+run_lintian = 1
+</code></pre>
+     <p>
+      After building the source package by
+      <code>
+       ./build_package source
+      </code>
+      , it can be uploaded with
+      <code>
+       dput
+      </code>
+      . The second argument
+      <code>
+       hellodeb
+      </code>
+      in this command refers to the section name
+      <code>
+       [hellodeb]
+      </code>
+      in the configuration file, that is how it finds the name of the server to upload, method, the name of the PPA etc.
+     </p>
+     <pre tabindex="0"><code>$ dput hellodeb hellodeb_1.0-8_source.changes
+
+Checking signature on .changes
+gpg: /home/mete/hellodeb/hellodeb_1.0-8_source.changes: Valid signature from C8DFA32F5BC52C01
+Checking signature on .dsc
+gpg: /home/mete/hellodeb/hellodeb_1.0-8.dsc: Valid signature from C8DFA32F5BC52C01
+Package is now being checked with lintian.
+Uploading to hellodeb (via ftp to ppa.launchpad.net):
+  Uploading hellodeb_1.0-8.dsc: done.
+  Uploading hellodeb_1.0-8.debian.tar.xz: done.
+  Uploading hellodeb_1.0-8_source.buildinfo: done.
+  Uploading hellodeb_1.0-8_source.changes: done.
+Successfully uploaded packages.
+</code></pre>
+     <p>
+      As mentioned before, original source (orig.tar.xz) is not included in changes so it is not uploaded.
+     </p>
+     <p>
+      The PPA can be added to the system with
+      <code>
+       sudo add-apt-repository ppa:metebalci/hellodeb
+      </code>
+      . After a
+      <code>
+       sudo apt update
+      </code>
+      , hellodeb package can be seen:
+     </p>
+     <pre tabindex="0"><code>$ apt-cache search hellodeb
+hellodeb - hello world for Debian packaging
+hellodeb-doc - hellodeb documentation
+</code></pre>
+     <p>
+      Lets install and try the program:
+     </p>
+     <pre tabindex="0"><code>$ sudo apt install hellodeb hellodeb-doc
+
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following NEW packages will be installed:
+  hellodeb hellodeb-doc
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 3,352 B of archives.
+After this operation, 4,096 B of additional disk space will be used.
+Get:1 http://ppa.launchpad.net/metebalci/hellodeb/ubuntu focal/main amd64 hellodeb amd64 1.0-8 [2,292 B]
+Get:2 http://ppa.launchpad.net/metebalci/hellodeb/ubuntu focal/main amd64 hellodeb-doc all 1.0-8 [1,060 B]
+Fetched 3,352 B in 0s (39.8 kB/s)  
+Selecting previously unselected package hellodeb.
+(Reading database ... 146030 files and directories currently installed.)
+Preparing to unpack .../hellodeb_1.0-8_amd64.deb ...
+Unpacking hellodeb (1.0-8) ...
+Selecting previously unselected package hellodeb-doc.
+Preparing to unpack .../hellodeb-doc_1.0-8_all.deb ...
+Unpacking hellodeb-doc (1.0-8) ...
+Setting up hellodeb (1.0-8) ...
+Setting up hellodeb-doc (1.0-8) ...
+Processing triggers for man-db (2.9.1-1) ...
+</code></pre>
+     <p>
+      Everything installed and works as expected. You can also see the man page with
+      <code>
+       man hellodeb
+      </code>
+      .
+     </p>
+     <pre tabindex="0"><code>$ which hellodeb
+/usr/bin/hellodeb
+
+$ hellodeb
+hello deb
+</code></pre>
+     <h2 id="deconstruction-of-a-full-package-build">
+      Deconstruction of a Full Package Build
+     </h2>
+     <p>
+      Below is the output of a full package build, where each number step corresponds the number step in the manual page of
+      <code>
+       dpkg-buildpackage
+      </code>
+      and the first word terminated by
+      <code>
+       :
+      </code>
+      (if any) is the hook name (e.g. init) called within
+      <code>
+       dpkg-buildpackage
+      </code>
+      . After this post, almost all of the output should make sense now.
+     </p>
+     <p>
+      <code>
+       build-package.sh
+      </code>
+      script prepares the versioned directory and runs
+      <code>
+       dpkg-buildpackage --build=full
+      </code>
+      .
+     </p>
+     <pre tabindex="0"><code>$ ./build-package.sh full
+</code></pre>
+     <p>
+      1- init: prepares the build environment, checks if
+      <code>
+       debian/rules
+      </code>
+      is present and calls
+      <code>
+       dpkg-source
+      </code>
+      for
+      <code>
+       --before-build
+      </code>
+     </p>
+     <pre tabindex="0"><code>hellodeb.c
+hellodeb.1
+dpkg-buildpackage: info: source package hellodeb
+dpkg-buildpackage: info: source version 1.0-7
+dpkg-buildpackage: info: source distribution focal
+dpkg-buildpackage: info: source changed by Mete Balci &lt;metebalci@gmail.com&gt;
+dpkg-buildpackage: info: host architecture amd64
+
+ dpkg-source --before-build .
+</code></pre>
+     <p>
+      2- dependencies are checked here but I dont have any dependencies so there is nothing displayed
+     </p>
+     <p>
+      3- preclean: calls
+      <code>
+       debian/rules
+      </code>
+      for
+      <code>
+       clean
+      </code>
+     </p>
+     <pre tabindex="0"><code> fakeroot debian/rules clean
+rm -f hellodeb
+rm -f hellodeb.1.gz
+rm -rf debian/tmp
+</code></pre>
+     <p>
+      4- source: calls
+      <code>
+       dpkg-source
+      </code>
+      to build the source package
+     </p>
+     <pre tabindex="0"><code> dpkg-source -b .
+dpkg-source: info: using source format '3.0 (quilt)'
+dpkg-source: info: building hellodeb using existing ./hellodeb_1.0.orig.tar.gz
+dpkg-source: info: building hellodeb in hellodeb_1.0-7.debian.tar.xz
+dpkg-source: info: building hellodeb in hellodeb_1.0-7.dsc
+</code></pre>
+     <p>
+      5- build: calls
+      <code>
+       debian/rules
+      </code>
+      for
+      <code>
+       build
+      </code>
+      and then
+      <code>
+       binary
+      </code>
+     </p>
+     <pre tabindex="0"><code> debian/rules build
+x86_64-linux-gnu-gcc `dpkg-buildflags --get CFLAGS` -Wall -o hellodeb hellodeb.c
+gzip -c hellodeb.1 &gt; hellodeb.1.gz
+
+ fakeroot debian/rules binary
+rm -rf debian/tmp
+mkdir -p debian/tmp/DEBIAN
+dpkg-gencontrol -phellodeb
+mkdir -p debian/tmp/usr/bin
+cp hellodeb debian/tmp/usr/bin
+strip --strip-unneeded --remove-section=.comment --remove-section=.note debian/tmp/usr/bin/hellodeb
+dpkg-deb --build debian/tmp ../hellodeb_1.0-7_amd64.deb
+dpkg-deb: building package 'hellodeb' in '../hellodeb_1.0-7_amd64.deb'.
+rm -rf debian/tmp
+mkdir -p debian/tmp/DEBIAN
+dpkg-gencontrol -phellodeb-doc
+mkdir -p debian/tmp/usr/share/man/man1
+cp hellodeb.1.gz debian/tmp/usr/share/man/man1
+dpkg-deb --build debian/tmp ../hellodeb-doc_1.0-7_all.deb
+dpkg-deb: building package 'hellodeb-doc' in '../hellodeb-doc_1.0-7_all.deb'.
+</code></pre>
+     <p>
+      6- buildinfo: calls
+      <code>
+       dpkg-genbuildinfo
+      </code>
+      to generate
+      <code>
+       buildinfo
+      </code>
+      build record file
+     </p>
+     <pre tabindex="0"><code> dpkg-genbuildinfo --build=full
+</code></pre>
+     <p>
+      7- changes: calls
+      <code>
+       dpkg-genchanges
+      </code>
+      to generate
+      <code>
+       changes
+      </code>
+      upload control file
+     </p>
+     <pre tabindex="0"><code> dpkg-genchanges --build=full &gt;../hellodeb_1.0-7_amd64.changes
+dpkg-genchanges: info: not including original source code in upload
+</code></pre>
+     <p>
+      8- postclean: since
+      <code>
+       --post-clean
+      </code>
+      is not specified, nothing is done
+     </p>
+     <p>
+      9- calls
+      <code>
+       dpkg-source
+      </code>
+      for
+      <code>
+       --after-build
+      </code>
+      , and also describes the build
+     </p>
+     <pre tabindex="0"><code> dpkg-source --after-build .
+dpkg-buildpackage: info: binary and diff upload (original source NOT included)
+</code></pre>
+     <p>
+      10- check: since no check command (
+      <code>
+       DEB_CHECK_COMMAND
+      </code>
+      ) is specified, nothing is done
+     </p>
+     <p>
+      11- sign: calls
+      <code>
+       gpg
+      </code>
+      to sign
+      <code>
+       dsc
+      </code>
+      ,
+      <code>
+       buildinfo
+      </code>
+      and
+      <code>
+       changes
+      </code>
+      files
+     </p>
+     <pre tabindex="0"><code> signfile hellodeb_1.0-7.dsc
+
+ signfile hellodeb_1.0-7_amd64.buildinfo
+
+ signfile hellodeb_1.0-7_amd64.changes
+</code></pre>
+     <p>
+      12- done:
+     </p>
+     <h2 id="what-is-missing-in-this-tutorial">
+      What is Missing in This Tutorial
+     </h2>
+     <ul>
+      <li>
+       maintainer scripts
+      </li>
+      <li>
+       creating a Debian repository
+      </li>
+      <li>
+       dh_make, debuild
+      </li>
+     </ul>
+    </div>
+    <div class="license">
+     <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">
+      <img alt="Creative Commons License" height="31" src="https://metebalci.com/by-nc-sa-88x31.png" style="border-width:0" width="88"/>
+     </a>
+     <br/>
+     <span>
+      This work is licensed under a
+     </span>
+     <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">
+      Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+     </a>
+     .
+    </div>
+   </div>
+  </main>
+  <hr/>
+  
+ </body>
+</html>
