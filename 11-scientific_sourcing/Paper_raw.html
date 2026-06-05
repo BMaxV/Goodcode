@@ -1,0 +1,62 @@
+<!doctype html>
+<meta charset="UTF-8">
+<html>   
+<head>
+    <title>
+    science
+    </title>
+</head>
+
+<body>
+<div><h2>method</h2>
+
+<ul>
+<li>I want every datapoint to be referenced / sourced</li>
+<li>I want every piece of code necessary to produce the artifact to be published</li>
+<li>meaning, including automatic datafetching of the source data if possible</li>
+<li>and including every calcuation necessary to produce the output from the input</li>
+<li>I want <b>extremely</b> clear differentiation between what is<ul>
+<li> verified, external data</li>
+<li>produced in a verifiable way as part of the project</li>
+<li><b>assumed</b> by the project to make the calculation possible</li>
+</ul>
+</li>
+<li>and I would love it if the artifact like the pdf was verifiable / hashed as well.</li>
+</ul>
+
+</div>
+    
+<div><h2>example content - city populations</h2></div>
+<p>
+ok, the numbers are slightly wrong because wikidata is annoying.
+ACTUALLY
+It's even better with a mistake, because that way you can go there, follow the source and find the mistake.
+the problem is that wikidata population numbers are actually a time series and there is no default sorting putting the newest at the top.
+
+</p>
+
+<img src="myfig.svg">
+</div>
+<div><h2>sources</h2>
+<h3>data</h3>
+wikidata
+<ul>
+    <li>Paris <a href="https://www.wikidata.org/wiki/Q90">https://www.wikidata.org/wiki/Q90</a></li>
+    <li>London<a href="https://www.wikidata.org/wiki/Q84">https://www.wikidata.org/wiki/Q84</a></li>
+    <li>Berlin<a href="https://www.wikidata.org/wiki/Q64">https://www.wikidata.org/wiki/Q64</a></li>
+    <li>New York<a href="https://www.wikidata.org/wiki/Q60">https://www.wikidata.org/wiki/Q60</a></li>
+    <li>Buenos Aires<a href="https://www.wikidata.org/wiki/Q1486">https://www.wikidata.org/wiki/Q1486</a></li>
+</ul>
+<h3>used software</h3>
+weasyprint for pdf creation
+<h3>code</h3>
+the calculations.py in this repo
+
+<h4>dependencies</h4>
+python
+<br>
+self written wikidata fetching module <a href="https://github.com/bmaxv/simplewikidata">https://github.com/bmaxv/simplewikidata</a>
+<br>
+matplotlib
+</div>
+</body>
