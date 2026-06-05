@@ -12,6 +12,11 @@ class Puppy:
 
 def the_function(number1, number2,random_complex_object):
     random_complex_object.stuffs(number1,number2)
+    
+    r = random.random()
+    if r > 0.5:
+        raise ValueError
+    
     return number1 + number2, random_complex_object
 
 def this_main():
